@@ -1,0 +1,51 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="MerchantDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="addressItems">
+    <Key>
+      <PropertyRef Name="addressid" />
+    </Key>
+    <Property Name="addressid" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="country" Type="nvarchar" MaxLength="50" />
+    <Property Name="state" Type="nvarchar" MaxLength="50" />
+    <Property Name="postcode" Type="int" />
+    <Property Name="suburb" Type="nvarchar" MaxLength="50" />
+    <Property Name="address1" Type="nvarchar" MaxLength="50" />
+    <Property Name="merchantDetail_Id" Type="uniqueidentifier" Nullable="false" />
+  </EntityType>
+  <EntityType Name="MerchantDetail">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="uniqueidentifier" Nullable="false" />
+    <Property Name="display_name" Type="nvarchar" MaxLength="100" />
+    <Property Name="registered_name" Type="nvarchar" MaxLength="100" />
+    <Property Name="email" Type="nvarchar" MaxLength="50" />
+    <Property Name="phone" Type="nvarchar" MaxLength="15" />
+    <Property Name="web_url" Type="nvarchar" MaxLength="256" />
+    <Property Name="merchant_id" Type="int" />
+    <Property Name="date_modified" Type="datetime2" Precision="7" />
+    <Property Name="date_created" Type="datetime2" Precision="7" />
+    <Property Name="status" Type="nvarchar" MaxLength="10" />
+    <Property Name="logo" Type="nvarchar" MaxLength="256" />
+  </EntityType>
+  <Association Name="fk_addressItemsMerchantDetail">
+    <End Role="MerchantDetail" Type="Self.MerchantDetail" Multiplicity="1" />
+    <End Role="addressItems" Type="Self.addressItems" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="MerchantDetail">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="addressItems">
+        <PropertyRef Name="merchantDetail_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="MerchantDBModelStoreContainer">
+    <EntitySet Name="addressItems" EntityType="Self.addressItems" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="MerchantDetail" EntityType="Self.MerchantDetail" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="fk_addressItemsMerchantDetail" Association="Self.fk_addressItemsMerchantDetail">
+      <End Role="MerchantDetail" EntitySet="MerchantDetail" />
+      <End Role="addressItems" EntitySet="addressItems" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
